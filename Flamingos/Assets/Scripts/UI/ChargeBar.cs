@@ -22,8 +22,6 @@ public class ChargeBar : MonoBehaviour
 
     private void Update ()
     {
-        Debug.Log(bottleThrowerScript.Charge);
         chargeBar.value = bottleThrowerScript.Charge;
-        Debug.Log(chargeBar.value);
 	}
 }

@@ -2,6 +2,8 @@
 
 public class BottleThrower : MonoBehaviour
 {
+    public string SelectedBottle { get; private set; }
+
     public float Charge { get; private set; }
     public bool IsCharging { get; private set; }
 
@@ -10,8 +12,9 @@ public class BottleThrower : MonoBehaviour
     private float chargerSpeed = 0.5f;
 
     private void Awake ()
-	{
-	    Charge = 0.0f;
+    {
+        SelectedBottle = "";
+        Charge = 0.0f;
 	    IsCharging = false;
 	    MaxThrowStrength = 1.0f;
 	}
@@ -25,6 +28,11 @@ public class BottleThrower : MonoBehaviour
         }
 	}
 
+    public void SelectBottle(string bottleType)
+    {
+        SelectedBottle = bottleType;
+    }
+
     public void StartCharging()
     {
         IsCharging = true;
@@ -32,10 +40,11 @@ public class BottleThrower : MonoBehaviour
 
     public void Throw()
     {
-        IsCharging = false;
-
         // Throw the correct bottle
 
+        SelectedBottle = "";
+
+        IsCharging = false;
         Charge = 0;
     }
 }

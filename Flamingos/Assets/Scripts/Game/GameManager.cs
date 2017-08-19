@@ -9,7 +9,7 @@ public class GameManager : KeepOnLoadMonoSingleton<GameManager>
     {
 	    CameraManager.Instance.ChangeCamera(CameraManager.FPS_CAMERA);
 
-        // Set Cursor to not be visible
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 }

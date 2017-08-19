@@ -7,13 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public LayerMask bottlesLayer;
+
     private PlayerRotation rotationScript;
-    private BottleThrower trowingBottleScript;
+    private BottleThrower bottleThrowerScript;
+
+    private float raycastDistance = 5.0f;
 
     private void Awake()
     {
         rotationScript = GetComponent<PlayerRotation>();
-        trowingBottleScript = GetComponent<BottleThrower>();
+        bottleThrowerScript = GetComponent<BottleThrower>();
     }
 
     private void Update()
@@ -32,16 +36,32 @@ public class PlayerController : MonoBehaviour
             if (CameraManager.Instance.CurrentCameraType == CameraManager.FPS_CAMERA)
             {
                 CameraManager.Instance.CurrentCamera.GetComponent<FPSCameraControl>().RotateCameraWithInput(inputs, true);
-            }
 
-            if ((bool)inputs["chargeInput"]) trowingBottleScript.StartCharging();
-            if ((bool)inputs["throwInput"]) trowingBottleScript.Throw();
+                if ((bool) inputs["selectInput"])
+                {
+                    RaycastHit hit;
+                    Ray ray = CameraManager.Instance.CurrentCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+
+                    // Cast a ray to check if a bottle is clicked and select it
+                    if (Physics.Raycast(ray, out hit, raycastDistance, bottlesLayer))
+                    {
+Debug.Log(hit.transform.GetComponent<Bottle>().BottleType);
+                        bottleThrowerScript.SelectBottle(hit.transform.GetComponent<Bottle>().BottleType);
+                    }
+                }
+                else if (bottleThrowerScript.SelectedBottle != "")
+                {
+                    if ((bool)inputs["chargeInput"]) bottleThrowerScript.StartCharging();
+                    if ((bool)inputs["throwInput"]) bottleThrowerScript.Throw();
+                }
+            }
         }
     }
 
     // The Hashtable of inputs value must contain those keys:
     //-xAxis
     //-yAxis
+    //-selectInput
     //-chargeInput
     //-throwInput
     Hashtable fetchInputs()
@@ -50,6 +70,8 @@ public class PlayerController : MonoBehaviour
 
         inputs.Add("xAxis", Input.GetAxis("Mouse X"));
         inputs.Add("yAxis", Input.GetAxis("Mouse Y"));
+
+        inputs.Add("selectInput", Input.GetButtonDown("Fire2"));
 
         inputs.Add("chargeInput", Input.GetButtonDown("Fire1"));
         inputs.Add("throwInput", Input.GetButtonUp("Fire1"));
