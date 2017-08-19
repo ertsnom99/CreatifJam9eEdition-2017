@@ -4,14 +4,35 @@ using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
+    public Dictionary<int, int> items;
     private int total_money;
-    private int total_bottles;
-    private int total_empty_bottles;
 
-    public void BeginNewGame()
+    private const int INITIAL_MONEY = 1000;
+
+    public void ResetInventory()
     {
-        total_money = 100;
-        total_bottles = 10;
+        items = new Dictionary<int, int>();
+
+        foreach (Item item in ItemManager.Instance.Items)
+        {
+            items.Add(item.ID,item.InitialAmount);
+        }
+        
+        total_money = INITIAL_MONEY;
+    }
+
+    public void AddItem(int item_ID)
+    {
+        if (items[item_ID] == -1)
+            { return; }
+        items[item_ID]++;
+    }
+
+    public void RemoveItem(int item_ID)
+    {
+        if(items[item_ID] == -1)
+            { return; }
+        items[item_ID]--;
     }
 
     public void AddMoney(int money)
@@ -22,15 +43,20 @@ public class InventoryManager : Singleton<InventoryManager>
     public void RemoveMoney(int cost)
     {
         total_money -= cost;
+        if (total_money < 0)
+        {
+            total_money = 0;
+        }
+    }
+    
+    public int GetAmountOfItem(int item_name)
+    {
+        return items[item_name];
     }
 
-    public void AddBottles(int amount_bottles)
+    public int GetTotalMoney()
     {
-        total_bottles += amount_bottles;
+        return total_money;
     }
-
-    public void RemoveBottles(int lost_bottles)
-    {
-        total_bottles += lost_bottles;
-    }
+    
 }
