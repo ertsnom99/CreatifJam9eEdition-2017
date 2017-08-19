@@ -45,8 +45,8 @@ public class PlayerController : MonoBehaviour
                     // Cast a ray to check if a bottle is clicked and select it
                     if (Physics.Raycast(ray, out hit, raycastDistance, bottlesLayer))
                     {
-Debug.Log(hit.transform.GetComponent<Bottle>().BottleType);
-                        bottleThrowerScript.SelectBottle(hit.transform.GetComponent<Bottle>().BottleType);
+Debug.Log(hit.transform.GetComponent<Item>().Name);
+                        bottleThrowerScript.SelectBottle(hit.transform.GetComponent<Item>().Name);
                     }
                 }
                 else if (bottleThrowerScript.SelectedBottle != "")
