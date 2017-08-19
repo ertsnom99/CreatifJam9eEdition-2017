@@ -7,7 +7,9 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 120.0f;
 
+    [SerializeField]
     private float maxLeftRotation = 70.0f;
+    [SerializeField]
     private float maxRightRotation = 70.0f;
 
     private Vector3 zeroDegreeForward;
