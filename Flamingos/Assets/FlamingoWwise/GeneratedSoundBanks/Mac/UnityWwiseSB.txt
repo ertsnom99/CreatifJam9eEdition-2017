@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2352987237	Play_New_Music_Playlist_Container			\Default Work Unit\Play_New_Music_Playlist_Container	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	438711873	SFX_EnfanceHeureuse_Matin1SoupirDeReveilFix	Y:\Desktop\CreatifJam9eEdition-2017\Flamingos\Assets\FlamingoWwise\.cache\Mac\SFX\SFX_EnfanceHeureuse_Matin1SoupirDeReveilFix_4B8CC0C5.wem		\Interactive Music Hierarchy\Default Work Unit\New Music Playlist Container\SFX_EnfanceHeureuse_Matin1SoupirDeReveilFix\SFX_EnfanceHeureuse_Matin1SoupirDeReveilFix		705792
+

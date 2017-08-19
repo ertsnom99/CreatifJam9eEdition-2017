@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="120">
+	<RootPaths>
+		<ProjectRoot>/Users/Marc-Antoine_Giguere/Library/Application Support/Wwise2016/Bottles/wwise/dosdevices/y:/Desktop/CreatifJam9eEdition-2017/Flamingos/Assets/FlamingoWwise/</ProjectRoot>
+		<SourceFilesRoot>/Users/Marc-Antoine_Giguere/Library/Application Support/Wwise2016/Bottles/wwise/dosdevices/y:/Desktop/CreatifJam9eEdition-2017/Flamingos/Assets/FlamingoWwise/.cache/Windows/</SourceFilesRoot>
+		<SoundBanksRoot>/Users/Marc-Antoine_Giguere/Library/Application Support/Wwise2016/Bottles/wwise/dosdevices/y:/Desktop/CreatifJam9eEdition-2017/Flamingos/Assets/FlamingoWwise/GeneratedSoundBanks/Windows/</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>/Users/Marc-Antoine_Giguere/Library/Application Support/Wwise2016/Bottles/wwise/dosdevices/y:/Desktop/CreatifJam9eEdition-2017/Flamingos/Assets/FlamingoWwise/GeneratedSoundBanks/Windows/</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="532813340" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\UnityWwiseSB</ObjectPath>
+			<ShortName>UnityWwiseSB</ShortName>
+			<Path>UnityWwiseSB.bnk</Path>
+			<IncludedEvents>
+				<Event Id="2352987237" Name="Play_New_Music_Playlist_Container" ObjectPath="\Events\Default Work Unit\Play_New_Music_Playlist_Container"/>
+			</IncludedEvents>
+			<IncludedMemoryFiles>
+				<File Id="438711873" Language="SFX">
+					<ShortName>SFX_EnfanceHeureuse_Matin1SoupirDeReveilFix.wav</ShortName>
+					<Path>SFX/SFX_EnfanceHeureuse_Matin1SoupirDeReveilFix_4B8CC0C5.wem</Path>
+				</File>
+			</IncludedMemoryFiles>
+		</SoundBank>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

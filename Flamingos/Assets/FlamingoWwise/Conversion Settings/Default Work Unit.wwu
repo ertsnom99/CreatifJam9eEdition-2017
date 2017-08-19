@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WwiseDocument Type="WorkUnit" ID="{B1E739E7-F672-478E-B24C-53BEB162A4B6}" SchemaVersion="72">
+<WwiseDocument Type="WorkUnit" ID="{B1E739E7-F672-478E-B24C-53BEB162A4B6}" SchemaVersion="75">
 	<Conversions>
 		<WorkUnit Name="Default Work Unit" ID="{B1E739E7-F672-478E-B24C-53BEB162A4B6}" PersistMode="Standalone">
 			<ChildrenList>
