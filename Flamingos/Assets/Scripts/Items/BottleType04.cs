@@ -1,11 +1,27 @@
 ﻿public class BottleType04 : Item
 {
-    private string name = "b4";
+    private int id = 3;
 
-    public override string Name
+    public override int ID
     {
-        get { return name; }
-        protected set { name = value; }
+        get { return id; }
+        protected set { id = value; }
+    }
+
+    private string itemName = "b4";
+
+    public override string ItemName
+    {
+        get { return itemName; }
+        protected set { itemName = value; }
+    }
+
+    private int initialAmount;
+
+    public override int InitialAmount
+    {
+        get { return initialAmount; }
+        protected set { initialAmount = value; }
     }
 
     private int price = 100;

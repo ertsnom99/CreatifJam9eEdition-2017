@@ -17,7 +17,7 @@ public class ChargeBar : MonoBehaviour
 
     private void Start()
     {
-        chargeBar.maxValue = bottleThrowerScript.MaxThrowStrength;
+        chargeBar.maxValue = bottleThrowerScript.MaxCharge;
     }
 
     private void Update ()

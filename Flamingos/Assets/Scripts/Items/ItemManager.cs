@@ -11,13 +11,13 @@ public class ItemManager : MonoSingleton<ItemManager>
         private set { items = value; }
     }
 
-    public int GetPriceByItemName(string itemName)
+    public int GetPriceByItemID(int itemID)
     {
         int itemPrice = 0;
 
         foreach (Item item in Items)
         {
-            if (item.Name == itemName) itemPrice = item.Price;
+            if (item.ID == itemID) itemPrice = item.Price;
         }
 
         return itemPrice;

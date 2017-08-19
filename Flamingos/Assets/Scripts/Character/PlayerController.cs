@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private PlayerRotation rotationScript;
     private BottleThrower bottleThrowerScript;
 
-    private float raycastDistance = 5.0f;
+    private float raycastDistance = Mathf.Infinity;
 
     private void Awake()
     {
@@ -32,30 +32,41 @@ public class PlayerController : MonoBehaviour
             // Rotate the character
             rotationScript.RotateCharacterWithInput(inputs, true);
 
-            // Move the camera
             if (CameraManager.Instance.CurrentCameraType == CameraManager.FPS_CAMERA)
             {
+                // Rotate the camera
                 CameraManager.Instance.CurrentCamera.GetComponent<FPSCameraControl>().RotateCameraWithInput(inputs, true);
 
-                if ((bool) inputs["selectInput"])
+                if (!bottleThrowerScript.IsCharging && (bool) inputs["selectInput"])
                 {
-                    RaycastHit hit;
-                    Ray ray = CameraManager.Instance.CurrentCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-
-                    // Cast a ray to check if a bottle is clicked and select it
-                    if (Physics.Raycast(ray, out hit, raycastDistance, bottlesLayer))
+                    // Cast a ray to check if a bottle is clicked
+                    Transform selectedbottle = TrySelectBottle();
+//***********************************************************************//
+                    if (selectedbottle != null /*&& InventoryManager.Instance.GetAmountOfItem(selectedbottle.GetComponent<Item>().ID) != 0*/)
                     {
-Debug.Log(hit.transform.GetComponent<Item>().Name);
-                        bottleThrowerScript.SelectBottle(hit.transform.GetComponent<Item>().Name);
+                        bottleThrowerScript.SelectBottle(selectedbottle.GetComponent<Item>());
                     }
                 }
-                else if (bottleThrowerScript.SelectedBottle != "")
+                else if (bottleThrowerScript.SelectedBottle != null)
                 {
                     if ((bool)inputs["chargeInput"]) bottleThrowerScript.StartCharging();
                     if ((bool)inputs["throwInput"]) bottleThrowerScript.Throw();
                 }
             }
         }
+    }
+
+    private Transform TrySelectBottle()
+    {
+        // Create a ray based on the camera
+        GameObject camera = CameraManager.Instance.CurrentCamera;
+        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+
+        RaycastHit hit;
+
+        Physics.Raycast(ray, out hit, raycastDistance, bottlesLayer);
+
+        return hit.transform;
     }
 
     // The Hashtable of inputs value must contain those keys:
