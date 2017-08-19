@@ -2,15 +2,18 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(CharacterMovement))]
+[RequireComponent(typeof(PlayerRotation))]
+[RequireComponent(typeof(BottleThrower))]
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterMovement movementScript;
+    private PlayerRotation rotationScript;
+    private BottleThrower trowingBottleScript;
 
     private void Awake()
     {
-        movementScript = GetComponent<CharacterMovement>();
+        rotationScript = GetComponent<PlayerRotation>();
+        trowingBottleScript = GetComponent<BottleThrower>();
     }
 
     private void Update()
@@ -23,28 +26,33 @@ public class PlayerController : MonoBehaviour
             Hashtable inputs = fetchInputs();
 
             // Rotate the character
-            movementScript.RotateCharacterWithInput(inputs, true);
+            rotationScript.RotateCharacterWithInput(inputs, true);
 
             // Move the camera
             if (CameraManager.Instance.CurrentCameraType == CameraManager.FPS_CAMERA)
             {
                 CameraManager.Instance.CurrentCamera.GetComponent<FPSCameraControl>().RotateCameraWithInput(inputs, true);
             }
+
+            if ((bool)inputs["chargeInput"]) trowingBottleScript.StartCharging();
+            if ((bool)inputs["throwInput"]) trowingBottleScript.Throw();
         }
     }
 
     // The Hashtable of inputs value must contain those keys:
     //-xAxis
     //-yAxis
+    //-chargeInput
+    //-throwInput
     Hashtable fetchInputs()
     {
         Hashtable inputs = new Hashtable();
 
-        inputs.Add("verticalInput", 0.0f);
-        inputs.Add("horizontalInput", 0.0f);
-
         inputs.Add("xAxis", Input.GetAxis("Mouse X"));
         inputs.Add("yAxis", Input.GetAxis("Mouse Y"));
+
+        inputs.Add("chargeInput", Input.GetButtonDown("Fire1"));
+        inputs.Add("throwInput", Input.GetButtonUp("Fire1"));
 
         return inputs;
     }

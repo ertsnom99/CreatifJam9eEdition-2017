@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
-public class CharacterMovement : MonoBehaviour
+public class PlayerRotation : MonoBehaviour
 {
     [SerializeField]
     private float rotationSpeed = 120.0f;
@@ -14,7 +13,7 @@ public class CharacterMovement : MonoBehaviour
 
     private Vector3 zeroDegreeForward;
 
-    private void Start()
+    private void Awake()
     {
         zeroDegreeForward = transform.forward;
     }
