@@ -43,7 +43,6 @@ public class WayPointListManager : MonoSingleton<WayPointListManager>
         }
         
         //list of waypoints
-        listOfWayPoints[0].Add(VertexList[0]);
         listOfWayPoints[0].Add(VertexList[1]);
         listOfWayPoints[0].Add(VertexList[2]);
         listOfWayPoints[0].Add(VertexList[3]);
@@ -58,8 +57,6 @@ public class WayPointListManager : MonoSingleton<WayPointListManager>
         listOfWayPoints[2].Add(VertexList[7]);
         listOfWayPoints[2].Add(VertexList[8]);
 
-        listOfWayPoints[3].Add(VertexList[0]);
-        listOfWayPoints[3].Add(VertexList[6]);
         listOfWayPoints[3].Add(VertexList[9]);
         listOfWayPoints[3].Add(VertexList[10]);
         listOfWayPoints[3].Add(VertexList[11]);

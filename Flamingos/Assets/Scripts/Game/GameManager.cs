@@ -102,13 +102,16 @@ public class GameManager : MonoSingleton<GameManager>
 
         // Eneable control of the character
         player.GetComponent<PlayerController>().enabled = true;
-//*************************************************************//
-// For ennemis
-//SHOULD START GENERATING THE ENNEMIS
-/*GameObject SpawnLocation1 = GameObject.Find("SpawnLocation1");
-GameObject SpawnedThief = Instantiate(thief, SpawnLocation1.transform.position, SpawnLocation1.transform.rotation);
-SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
-//*************************************************************//
+
+        //*************************************************************//
+        // For ennemis
+        //SHOULD START GENERATING THE ENNEMIS
+        //*************************************************************//
+        SpawnManager.Instance.Enable();
+        SpawnManager.Instance.StartSpawningDrunks();
+        //*************************************************************//
+
+
         // Start the timer
         StartCoroutine(Timer(RoundDuration));
     }
@@ -120,12 +123,19 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         EndRound();
     }
 
+    
+
     private void EndRound()
     {
-//*************************************************************//
-// For ennemis
-//SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
-//*************************************************************//
+
+        //*************************************************************//
+        // For ennemis
+        //SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
+        //*************************************************************//
+        SpawnManager.Instance.StopSpawningDrunks();
+        SpawnManager.Instance.KillAllDrunks();
+        //*************************************************************//
+
         // Diseable control of the character
         player.GetComponent<PlayerController>().enabled = false;
 
@@ -180,6 +190,8 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         // Unhide and unlock the cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        SpawnManager.Instance.StopSpawningDrunks();
     }
 
     public void Resume()
@@ -197,6 +209,8 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
 
         // Returne time to normal... THE WORLD!!! TOKIO TOMARE!!!
         Time.timeScale = 1;
+
+        SpawnManager.Instance.StartSpawningDrunks();
     }
 
     public void QuitGame()
@@ -217,9 +231,13 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         Destroy(currentPauseCanvas);
         currentPauseCanvas = null;
 
-//*************************************************************//
-// For ennemis
-//SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
-//*************************************************************//
+        //*************************************************************//
+        // For ennemis
+        //SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
+        SpawnManager.Instance.StopSpawningDrunks();
+        SpawnManager.Instance.KillAllDrunks();
+        SpawnManager.Instance.Disable();
+        //*************************************************************//
+
     }
 }
