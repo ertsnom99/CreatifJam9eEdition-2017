@@ -35,7 +35,7 @@ public class GameManager : MonoSingleton<GameManager>
     public int Round { get; private set; }
 
     [SerializeField]
-    private float roundDuration = 5f;
+    private float roundDuration = 90.0f;
 
     public float RoundDuration
     {
@@ -44,11 +44,6 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     private RoundInfo roundInfo;
-
-    private void Awake()
-    {
-        RoundDuration = 10f;
-    }
 
     private void Start ()
     {
@@ -68,6 +63,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void StartGame()
     {
+        Debug.Log("start game");
         // Display the HUD
         if (currentHUDCanvas == null)
         { 
@@ -84,12 +80,20 @@ public class GameManager : MonoSingleton<GameManager>
         // Reset the number of round
         Round = 0;
 
+        SoundManager.Instance.SetPrimaryAmbient("AMBGame");
+
+        SoundManager.Instance.SetSecondaryAmbient("AMBPause");
+
         // Start a new round
         StartRound();
     }
 
     private void StartRound()
     {
+        Debug.Log("start round");
+        SoundManager.Instance.RestartPrimaryAmbient();
+        SoundManager.Instance.RestartSecondaryAmbient();
+        
         // Hide and lock the cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -101,7 +105,7 @@ public class GameManager : MonoSingleton<GameManager>
         if (roundInfo != null)
         {
             currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
-
+            Debug.Log("bouge");
             // Eneable control of the character
             player.GetComponent<PlayerController>().enabled = true;
 
@@ -170,9 +174,14 @@ public class GameManager : MonoSingleton<GameManager>
         // Return the character and the camera to there original orientation
         player.transform.rotation = initCharacterRot;
         CameraManager.Instance.CurrentCamera.transform.rotation = initCameraRot;
-        
+
+        SoundManager.Instance.PausePrimaryAmbient();
+        SoundManager.Instance.RestartSecondaryAmbient();
+
+        InventoryManager.GetInstance().RemoveMoney(roundInfo.Goal);
+
         // Check if the player has enough money to continue playing (Game Over)
-        if (InventoryManager.GetInstance().GetTotalMoney() < roundInfo.Goal)
+        if (InventoryManager.GetInstance().GetTotalMoney() <= 0)
         {
             // Show the game over menu
             GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
@@ -204,6 +213,9 @@ public class GameManager : MonoSingleton<GameManager>
         currentPauseCanvas.GetComponent<PauseCanvas>().SetCallBackMethodOnClose(Resume);
         currentPauseCanvas.GetComponent<PauseCanvas>().SetCallBackMethodOnMenu(QuitGame);
 
+        SoundManager.Instance.PausePrimaryAmbient();
+        SoundManager.Instance.RestartSecondaryAmbient();
+
         // Unhide and unlock the cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -223,6 +235,9 @@ public class GameManager : MonoSingleton<GameManager>
 
         // Eneable control of the character
         player.GetComponent<PlayerController>().enabled = true;
+
+        SoundManager.Instance.StopSecondaryAmbient();
+        SoundManager.Instance.PlayPrimaryAmbient();
 
         // Returne time to normal... THE WORLD!!! TOKIO TOMARE!!!
         Time.timeScale = 1;
@@ -247,6 +262,15 @@ public class GameManager : MonoSingleton<GameManager>
         // Remove the pause menu
         Destroy(currentPauseCanvas);
         currentPauseCanvas = null;
+
+        // Returne time to normal... THE WORLD!!! TOKIO TOMARE!!!
+        Time.timeScale = 1;
+
+        SoundManager.Instance.StopSecondaryAmbient();
+        SoundManager.Instance.StopPrimaryAmbient();
+
+        SoundManager.Instance.SetPrimaryAmbient("AMBMenu");
+        SoundManager.Instance.PlayPrimaryAmbient();
 
         //*************************************************************//
         // For ennemis

@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
                         bottleThrowerScript.SelectBottle(selectedbottle.GetComponent<Item>());
                     }
                 }
-                else if (bottleThrowerScript.SelectedBottle != null)
+                else if (bottleThrowerScript.SelectedBottle != null && InventoryManager.GetInstance().GetAmountOfItem(bottleThrowerScript.SelectedBottle.ID) != 0)
                 {
                     if ((bool)inputs["chargeInput"]) bottleThrowerScript.StartCharging();
                     if ((bool)inputs["throwInput"]) bottleThrowerScript.Throw();

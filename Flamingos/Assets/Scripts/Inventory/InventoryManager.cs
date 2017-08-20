@@ -7,7 +7,7 @@ public class InventoryManager : Observable<InventoryManager>
     public Dictionary<int, int> items;
     private int total_money;
 
-    private const int INITIAL_MONEY = 1000;
+    private const int INITIAL_MONEY = 100;
 
     public void ResetInventory()
     {
@@ -32,7 +32,7 @@ public class InventoryManager : Observable<InventoryManager>
 
     public void RemoveItem(int item_ID)
     {
-        if(items[item_ID] == -1)
+        if(items[item_ID] <= 0)
             { return; }
         items[item_ID]--;
         NotifyObservers();

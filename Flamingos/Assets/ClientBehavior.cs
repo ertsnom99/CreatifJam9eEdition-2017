@@ -12,7 +12,7 @@ public class ClientBehavior : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        timeUntilDisappearance = 3.5f;
+        timeUntilDisappearance = 6f;
     }
 
     void OnCollisionEnter(Collision collision)

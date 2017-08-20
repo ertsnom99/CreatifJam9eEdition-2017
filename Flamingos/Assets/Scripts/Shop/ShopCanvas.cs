@@ -10,7 +10,7 @@ public class ShopCanvas : MonoBehaviour {
     private const int BOTTLE_2 = 1;
     private const int BOTTLE_3 = 2;
     private const int BOTTLE_4 = 3;
-    private const int BEAR_TRAP = 4;
+    //private const int BEAR_TRAP = 4;
 
     internal void SetCallBackMethodOnClose()
     {
@@ -21,13 +21,13 @@ public class ShopCanvas : MonoBehaviour {
     public Text Bottle2PriceText;
     public Text Bottle3PriceText;
     public Text Bottle4PriceText;
-    public Text BearTrapPriceText;
+    //public Text BearTrapPriceText;
     public Text NotEnoughMoneyText;
 
     public Button BuyBottle2Button;
     public Button BuyBottle3Button;
     public Button BuyBottle4Button;
-    public Button BuyBearTrapButton;
+    //public Button BuyBearTrapButton;
 
     private Action callBackMethod;
 
@@ -38,7 +38,7 @@ public class ShopCanvas : MonoBehaviour {
         Bottle2PriceText.text = ItemManager.Instance.GetPriceByItemID(BOTTLE_2).ToString() + " $";
         Bottle3PriceText.text = ItemManager.Instance.GetPriceByItemID(BOTTLE_3).ToString() + " $";
         Bottle4PriceText.text = ItemManager.Instance.GetPriceByItemID(BOTTLE_4).ToString() + " $";
-        BearTrapPriceText.text = ItemManager.Instance.GetPriceByItemID(BEAR_TRAP).ToString() + " $";
+        //BearTrapPriceText.text = ItemManager.Instance.GetPriceByItemID(BEAR_TRAP).ToString() + " $";
     }
 
     public void SetCallBackMethodOnClose(Action method)
@@ -87,7 +87,7 @@ public class ShopCanvas : MonoBehaviour {
                 else
                     { NotEnoughMoneyText.text = "Not Enough Money!"; }
                 break;
-            case BEAR_TRAP:
+            /*case BEAR_TRAP:
                 if (InventoryManager.GetInstance().GetTotalMoney() >= ItemManager.Instance.GetPriceByItemID(BEAR_TRAP))
                 {
                     InventoryManager.GetInstance().AddItem(BEAR_TRAP);
@@ -96,7 +96,7 @@ public class ShopCanvas : MonoBehaviour {
                 }
                 else
                     { NotEnoughMoneyText.text = "Not Enough Money!"; }
-                break;
+                break;*/
         }
             
     }

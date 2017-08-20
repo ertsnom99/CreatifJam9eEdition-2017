@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoSingleton<SpawnManager> {
     public bool isEnabled = false;
-    public const float drunkSpawnFrequency = 3.0f;
+    public float drunkSpawnFrequency = 3.0f;
     public float clientSpawnFrequency = 5.0f;
     public GameObject Drunk;
 
