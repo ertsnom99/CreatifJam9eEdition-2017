@@ -15,6 +15,7 @@ public class InventoryManager : Observable<InventoryManager>
 
         foreach (Item item in ItemManager.Instance.Items)
         {
+Debug.Log(item.InitialAmount);
             items.Add(item.ID,item.InitialAmount);
         }
         

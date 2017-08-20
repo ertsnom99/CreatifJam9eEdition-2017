@@ -16,7 +16,7 @@
         protected set { itemName = value; }
     }
 
-    private int initialAmount;
+    private int initialAmount = 5;
 
     public override int InitialAmount
     {

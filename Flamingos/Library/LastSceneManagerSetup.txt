@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_scenes/Pause_Menu.unity
+- path: Assets/_scenes/Camera_and_Throwing.unity
   isLoaded: 1
   isActive: 1

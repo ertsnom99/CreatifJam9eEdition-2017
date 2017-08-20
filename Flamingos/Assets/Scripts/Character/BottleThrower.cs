@@ -44,21 +44,19 @@ public class BottleThrower : MonoBehaviour
 
     public void SelectBottle(Item bottle)
     {
-Debug.Log("Select");
         SelectedBottle = bottle;
     }
 
     public void StartCharging()
     {
-Debug.Log("Charge");
         IsCharging = true;
     }
 
     public void Throw()
     {
         // Reduce the count of the used item
-        //ItemManager.Instance.RemoveItem(SelectedBottle.ID);
-//***********************************************************************//
+        InventoryManager.GetInstance().RemoveItem(SelectedBottle.ID);
+
         // Place the bottle at its original position
         GameObject bottle = Instantiate(Resources.Load(SelectedBottle.PrefabName)) as GameObject;
         AlignBottle(ThrowOrigin, bottle, bottle);

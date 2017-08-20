@@ -41,8 +41,8 @@ public class PlayerController : MonoBehaviour
                 {
                     // Cast a ray to check if a bottle is clicked
                     Transform selectedbottle = TrySelectBottle();
-//***********************************************************************//
-                    if (selectedbottle != null /*&& InventoryManager.Instance.GetAmountOfItem(selectedbottle.GetComponent<Item>().ID) != 0*/)
+
+                    if (selectedbottle != null && InventoryManager.GetInstance().GetAmountOfItem(selectedbottle.GetComponent<Item>().ID) != 0)
                     {
                         bottleThrowerScript.SelectBottle(selectedbottle.GetComponent<Item>());
                     }
