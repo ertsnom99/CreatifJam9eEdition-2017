@@ -110,6 +110,7 @@ public class GameManager : MonoSingleton<GameManager>
         SpawnManager.Instance.Enable();
         SpawnManager.Instance.StartSpawningDrunks();
         //*************************************************************//
+        SpawnManager.Instance.SpawnClient();
 
 
         // Start the timer

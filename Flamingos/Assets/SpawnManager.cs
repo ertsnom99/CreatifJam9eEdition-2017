@@ -8,16 +8,25 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
     public const float drunkSpawnFrequency = 3.0f;
     public GameObject Drunk;
 
+    public GameObject Client;
+    public GameObject SpawnedClientLocation;
+
     private float onPauseRemainDelayTillNextDrunkSpawn = 2.0f;
     private ArrayList spawnedDrunks = new ArrayList();
     private Stopwatch timer = new Stopwatch();
+
     private GameObject[] SpawnDrunkLocationArray;
-    
+    private GameObject[] SpawnClientLocationArray;
+    private bool[] OccupiedClientLocationArray;
+
 
     // Use this for initialization
     void Start () {
         Random.InitState((int)System.DateTime.Now.Ticks);
         SpawnDrunkLocationArray = GameObject.FindGameObjectsWithTag("SpawnDrunkLocation");
+        SpawnClientLocationArray = GameObject.FindGameObjectsWithTag("SpawnClientLocation");
+        OccupiedClientLocationArray = new bool[SpawnClientLocationArray.Length];
+
         UnityEngine.Debug.Log("");
         // VERIFY IF SpawnDrunkLocationArray CONTAINS THE 3 DRUNK SPAWN LOCATIONS
     }
@@ -42,7 +51,6 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
         return actualSpawnID;
     }
     
-
     private void SpawnDrunk()
     {
         int SpawnLocationID = GetDrunkSpawnLocation();
@@ -75,6 +83,16 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
         newlySpawned.GetComponent<ThiefMovement>().StartChar();
 
         spawnedDrunks.Add(newlySpawned);    
+    }
+
+    
+
+
+    public void SpawnClient()
+    {
+
+        GameObject newlySpawned = Instantiate(Client, SpawnedClientLocation.transform.position, SpawnedClientLocation.transform.rotation);
+
     }
 
     public void KillAllDrunks()
