@@ -40,6 +40,7 @@ public class ThiefMovement : MonoBehaviour {
 	
     private Vector3 getNextDestination(int nextDestinationID)
     {
+        Debug.Log(nextDestinationID);
         return wayPointList[nextDestinationID].NodeGameObject.transform.position;
     }
 
@@ -58,9 +59,8 @@ public class ThiefMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (isAgentAtDestination() == true && CurrentDestinationID < wayPointList.Count)
+        if (isAgentAtDestination() == true && CurrentDestinationID++ < wayPointList.Count)
         {
-            CurrentDestinationID++;
             CurrentDestination = getNextDestination(CurrentDestinationID);
             ThiefAgent.SetDestination(CurrentDestination);
         }
