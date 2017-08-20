@@ -17,6 +17,6 @@ public class GameManager : KeepOnLoadMonoSingleton<GameManager>
         // For ennemis
         GameObject SpawnLocation1 = GameObject.Find("SpawnLocation1");
         GameObject SpawnedThief = Instantiate(Thief, SpawnLocation1.transform.position, SpawnLocation1.transform.rotation);
-        //SpawnedThief.GetComponent<ThiefMovement>().StartChar();
+        SpawnedThief.GetComponent<ThiefMovement>().StartChar();
     }
 }
