@@ -47,7 +47,7 @@ public class ThiefMovement : MonoBehaviour {
 
 
 
-        ThiefAgent.speed = 2.0f;
+        ThiefAgent.speed = 1.5f;
         CurrentDestinationID = 0;
         CurrentDestination = getNextDestination(CurrentDestinationID);
         ThiefAgent.SetDestination(CurrentDestination);

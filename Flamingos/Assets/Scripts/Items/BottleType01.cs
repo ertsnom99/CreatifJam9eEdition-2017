@@ -8,7 +8,7 @@
         protected set { id = value; }
     }
 
-    private string itemName = "b1";
+    private string itemName = "Dack Janiels";
 
     public override string ItemName
     {
@@ -32,7 +32,7 @@
         protected set { price = value; }
     }
 
-    private int gain;
+    private int gain = 10;
 
     public override int Gain
     {

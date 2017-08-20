@@ -103,16 +103,16 @@ public class GameManager : MonoSingleton<GameManager>
         // Eneable control of the character
         player.GetComponent<PlayerController>().enabled = true;
 
+
         //*************************************************************//
         // For ennemis
         //SHOULD START GENERATING THE ENNEMIS
         //*************************************************************//
+        SpawnManager.Instance.clientSpawnFrequency = getClientFrequency(Round);
         SpawnManager.Instance.Enable();
-        SpawnManager.Instance.StartSpawningDrunks();
+        SpawnManager.Instance.StartSpawningClientsAndDrunks();
         //*************************************************************//
-        SpawnManager.Instance.SpawnClient();
-
-
+        
         // Start the timer
         StartCoroutine(Timer(RoundDuration));
     }
@@ -133,8 +133,8 @@ public class GameManager : MonoSingleton<GameManager>
         // For ennemis
         //SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
         //*************************************************************//
-        SpawnManager.Instance.StopSpawningDrunks();
-        SpawnManager.Instance.KillAllDrunks();
+        SpawnManager.Instance.StopSpawningClientsAndDrunks();
+        SpawnManager.Instance.KillAllDrunksAndClients();
         //*************************************************************//
 
         // Diseable control of the character
@@ -192,7 +192,7 @@ public class GameManager : MonoSingleton<GameManager>
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        SpawnManager.Instance.StopSpawningDrunks();
+        SpawnManager.Instance.StopSpawningClientsAndDrunks();
     }
 
     public void Resume()
@@ -211,7 +211,7 @@ public class GameManager : MonoSingleton<GameManager>
         // Returne time to normal... THE WORLD!!! TOKIO TOMARE!!!
         Time.timeScale = 1;
 
-        SpawnManager.Instance.StartSpawningDrunks();
+        SpawnManager.Instance.StartSpawningClientsAndDrunks();
     }
 
     public void QuitGame()
@@ -235,10 +235,34 @@ public class GameManager : MonoSingleton<GameManager>
         //*************************************************************//
         // For ennemis
         //SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
-        SpawnManager.Instance.StopSpawningDrunks();
-        SpawnManager.Instance.KillAllDrunks();
+        SpawnManager.Instance.StopSpawningClientsAndDrunks();
+        SpawnManager.Instance.KillAllDrunksAndClients();
         SpawnManager.Instance.Disable();
         //*************************************************************//
 
+    }
+
+    private float getClientFrequency(int currentRound)
+    {
+        switch (currentRound)
+        {
+            case 1:
+            {
+                    return 5.0f;
+                    break;
+            }
+            case 2:
+            {
+                    return 4.0f;
+                    break;
+            }
+            case 3:
+            {
+                    return 4.0f;
+                    break;
+            }
+
+        }; //end switch
+        return -1;
     }
 }

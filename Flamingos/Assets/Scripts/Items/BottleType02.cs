@@ -8,7 +8,7 @@
         protected set { id = value; }
     }
 
-    private string itemName = "b2";
+    private string itemName = "Fire Bullet";
 
     public override string ItemName
     {

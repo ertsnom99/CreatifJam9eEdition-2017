@@ -6,13 +6,16 @@ using UnityEngine;
 public class SpawnManager : MonoSingleton<SpawnManager> {
     public bool isEnabled = false;
     public const float drunkSpawnFrequency = 3.0f;
+    public float clientSpawnFrequency = 5.0f;
     public GameObject Drunk;
 
     public GameObject Client;
-    public GameObject SpawnedClientLocation;
+    
 
     private float onPauseRemainDelayTillNextDrunkSpawn = 2.0f;
+    private float onPauseRemainDelayTillNextClientSpawn = 0.0f;
     private ArrayList spawnedDrunks = new ArrayList();
+    private ArrayList spawnedClients = new ArrayList();
     private Stopwatch timer = new Stopwatch();
 
     private GameObject[] SpawnDrunkLocationArray;
@@ -27,21 +30,28 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
         SpawnClientLocationArray = GameObject.FindGameObjectsWithTag("SpawnClientLocation");
         OccupiedClientLocationArray = new bool[SpawnClientLocationArray.Length];
 
-        UnityEngine.Debug.Log("");
+        for (int i = 0; i < OccupiedClientLocationArray.Length; ++i) 
+        {
+            OccupiedClientLocationArray[i] = false;
+        }
+        
         // VERIFY IF SpawnDrunkLocationArray CONTAINS THE 3 DRUNK SPAWN LOCATIONS
     }
 
-    public void StartSpawningDrunks()
+    public void StartSpawningClientsAndDrunks()
     {
         InvokeRepeating("SpawnDrunk", onPauseRemainDelayTillNextDrunkSpawn, drunkSpawnFrequency);
+        InvokeRepeating("SpawnClient", onPauseRemainDelayTillNextClientSpawn, clientSpawnFrequency);
         timer.Start();
     }
 
-    public void StopSpawningDrunks()
+    public void StopSpawningClientsAndDrunks()
     {
         CancelInvoke("SpawnDrunk");
+        CancelInvoke("SpawnClient");
         timer.Stop();
-        onPauseRemainDelayTillNextDrunkSpawn = (float)((timer.ElapsedMilliseconds / 1000)%3);
+        onPauseRemainDelayTillNextDrunkSpawn = (float)((timer.ElapsedMilliseconds / 1000 ) % (int)drunkSpawnFrequency);
+        onPauseRemainDelayTillNextClientSpawn = (float)((timer.ElapsedMilliseconds / 1000) % (int)clientSpawnFrequency);
     }
 
     private int getActualSpawnID(string spawnLocationName)
@@ -85,22 +95,67 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
         spawnedDrunks.Add(newlySpawned);    
     }
 
-    
+    private int countNumAvailableClientLocations()
+    {
+        int countNumAvailableClientLocations = 0;
+        for (int i = 0; i < OccupiedClientLocationArray.Length; ++i)
+        {
+            if (OccupiedClientLocationArray[i] == false)
+            {
+                countNumAvailableClientLocations++;
+            }
+        }
+        return countNumAvailableClientLocations;
+    }
 
+    private int findActualPosInCusSpwnLocArray(int randomGenNr)
+    {
+        int count = 0;
+        for (int i = 0; i < OccupiedClientLocationArray.Length; ++i)
+        {
+            if (OccupiedClientLocationArray[i] == false)
+            {
+                if (randomGenNr == count)
+                {
+                    return i;
+                }
+                count++;
+            }
+        }
+        return -1;
+    }
 
     public void SpawnClient()
     {
+        int numAvailableClientLocations = countNumAvailableClientLocations();
+        if (numAvailableClientLocations == 0)
+        {
+            return;
+        }
+
+        int chosenLocation = Random.Range(0, numAvailableClientLocations);
+        int locationInArray = findActualPosInCusSpwnLocArray(chosenLocation);
+
+        GameObject SpawnedClientLocation = SpawnClientLocationArray[locationInArray];
 
         GameObject newlySpawned = Instantiate(Client, SpawnedClientLocation.transform.position, SpawnedClientLocation.transform.rotation);
 
+        OccupiedClientLocationArray[locationInArray] = true;
+        spawnedClients.Add(newlySpawned);       
     }
 
-    public void KillAllDrunks()
+    public void KillAllDrunksAndClients()
     {
         foreach (GameObject SpawnedDrunk in spawnedDrunks)
         {
             Destroy(SpawnedDrunk);
         }
+
+        foreach (GameObject SpawnedClient in spawnedClients)
+        {
+            Destroy(SpawnedClient);
+        }
+
     }
 
     private int GetDrunkSpawnLocation()
@@ -118,6 +173,9 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
     {
         isEnabled = false;
     }
+
+
+
 
 	// Update is called once per frame
 	void Update () {

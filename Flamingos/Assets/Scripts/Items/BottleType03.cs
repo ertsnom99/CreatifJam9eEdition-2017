@@ -8,7 +8,7 @@
         protected set { id = value; }
     }
 
-    private string itemName = "b3";
+    private string itemName = "Johnnie Water";
 
     public override string ItemName
     {
@@ -16,7 +16,7 @@
         protected set { itemName = value; }
     }
 
-    private int initialAmount = 50;
+    private int initialAmount;
 
     public override int InitialAmount
     {
@@ -24,7 +24,7 @@
         protected set { initialAmount = value; }
     }
 
-    private int price = 50;
+    private int price = 30;
 
     public override int Price
     {
@@ -32,7 +32,7 @@
         protected set { price = value; }
     }
 
-    private int gain = 100;
+    private int gain = 75;
 
     public override int Gain
     {

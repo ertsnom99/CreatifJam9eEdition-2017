@@ -8,7 +8,7 @@
         protected set { roundNo = value; }
     }
 
-    private int goal = 500;
+    private int goal = 80;
 
     public override int Goal
     {
