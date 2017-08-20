@@ -21,7 +21,7 @@ public class BottleThrower : MonoBehaviour
     public float MaxThrowStrength { get; private set; }
     public float MaxTorqueStrength { get; private set; }
 
-    private float chargerSpeed = 0.5f;
+    private float chargeSpeed = 0.5f;
 
     private void Awake ()
     {
@@ -37,7 +37,7 @@ public class BottleThrower : MonoBehaviour
     {
         if (IsCharging)
         {
-            Charge += chargerSpeed * Time.deltaTime;
+            Charge += chargeSpeed * Time.deltaTime;
             if (Charge > MaxCharge) Charge = MaxCharge;
         }
 	}
@@ -78,5 +78,12 @@ public class BottleThrower : MonoBehaviour
         // Place the weapon so that the reference object will be align to and oriented exactly like the weapon holder
         bottle.transform.rotation = bottleHolder.transform.rotation * Quaternion.Inverse(bottleRef.transform.localRotation);
         bottle.transform.position -= bottleRef.transform.position - bottleHolder.transform.position;
+    }
+
+    public void StopThrowing()
+    {
+        IsCharging = false;
+        Charge = 0;
+        SelectedBottle = null;
     }
 }
