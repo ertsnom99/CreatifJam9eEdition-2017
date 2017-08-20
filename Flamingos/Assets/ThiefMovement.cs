@@ -12,14 +12,15 @@ public class ThiefMovement : MonoBehaviour {
     public int WayPointID;
     private List<WayPointListManager.Vertex> wayPointList;
     private bool isInitializationComplete = false;
-
+    private GameObject Thief;
     // Use this for initialization
     void Awake()
     {
-        GameObject Thief = GameObject.Find("Thief");
-        ThiefAgent = Thief.GetComponentInChildren<NavMeshAgent>();
+        //Thief = GetComponentInParent<>
+        //Thief = GameObject.Find("Thief(Clone)");
+        ThiefAgent = GetComponentInChildren<NavMeshAgent>();
     }
-    void Start () {
+    public void StartChar() {
 
         //wayPointManager = GetComponent<WayPointManager>(); //WE WILL NEED THIS LATER!
         
@@ -31,6 +32,8 @@ public class ThiefMovement : MonoBehaviour {
         WayPointListManager.Instance.Initialize();
         wayPointList = WayPointListManager.Instance.GetWayPointListCopy(WayPointID);
 
+
+        
         ThiefAgent.speed = 1.5f;
         CurrentDestinationID = 0;
         CurrentDestination = getNextDestination(CurrentDestinationID);
@@ -40,7 +43,7 @@ public class ThiefMovement : MonoBehaviour {
 	
     private Vector3 getNextDestination(int nextDestinationID)
     {
-        Debug.Log(nextDestinationID);
+        //Debug.Log(nextDestinationID);
         return wayPointList[nextDestinationID].NodeGameObject.transform.position;
     }
 
@@ -59,7 +62,8 @@ public class ThiefMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (isAgentAtDestination() == true && CurrentDestinationID++ < wayPointList.Count)
+
+        if (isAgentAtDestination() == true && ++CurrentDestinationID < wayPointList.Count)
         {
             CurrentDestination = getNextDestination(CurrentDestinationID);
             ThiefAgent.SetDestination(CurrentDestination);

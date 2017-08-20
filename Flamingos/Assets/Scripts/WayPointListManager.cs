@@ -69,7 +69,6 @@ public class WayPointListManager : MonoSingleton<WayPointListManager>
 
     private void initVertex(int inIndex)
     {
-        Debug.Log(VertexList == null);
         VertexList[inIndex] = new Vertex();
         VertexList[inIndex].NodeGameObject = GameObject.Find("Node" + (inIndex) ) as GameObject;
         VertexList[inIndex].index = inIndex; 

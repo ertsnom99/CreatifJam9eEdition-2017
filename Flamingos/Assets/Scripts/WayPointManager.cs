@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class WayPointManager : MonoBehaviour {
 
-    WayPointListManager waypointListManager;
+    //WayPointListManager waypointListManager;
 
     //TODO: Replace GameObject with SpawnedThief
     List<GameObject> ThiefList = new List<GameObject>();
