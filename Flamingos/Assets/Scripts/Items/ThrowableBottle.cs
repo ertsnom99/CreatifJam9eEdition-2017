@@ -14,6 +14,7 @@ public class ThrowableBottle : MonoBehaviour
                 break;
             case GameManager.CLIENT_TAG:
                 InventoryManager.GetInstance().AddMoney(GetComponent<Item>().Gain);
+                Destroy(gameObject);
                 break;
         }
     }

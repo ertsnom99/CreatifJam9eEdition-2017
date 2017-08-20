@@ -8,11 +8,11 @@
         protected set { roundNo = value; }
     }
 
-    private int minMoney = 4500;
+    private int goal = 4500;
 
-    public override int MinMoney
+    public override int Goal
     {
-        get { return minMoney; }
-        protected set { minMoney = value; }
+        get { return goal; }
+        protected set { goal = value; }
     }
 }

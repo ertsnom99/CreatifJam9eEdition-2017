@@ -41,6 +41,8 @@ public class GameManager : MonoSingleton<GameManager>
         private set { roundDuration = value; }
     }
 
+    private RoundInfo roundInfo;
+
     private void Awake()
     {
         RoundDuration = 10f;
@@ -92,6 +94,10 @@ public class GameManager : MonoSingleton<GameManager>
 
         Round++;
 
+        roundInfo = RoundInfoFactery.GetInstance().GetRoundInfo(Round);
+
+        currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
+
         // Eneable control of the character
         player.GetComponent<PlayerController>().enabled = true;
 //*************************************************************//
@@ -137,10 +143,7 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         CameraManager.Instance.CurrentCamera.transform.rotation = initCameraRot;
         
         // Check if the player has enough money to continue playing (Game Over)
-        RoundInfo roundInfo = RoundInfoFactery.GetInstance().GetRoundInfo(Round);
-        int money = InventoryManager.GetInstance().GetTotalMoney();
-
-        if (money < roundInfo.MinMoney)
+        if (InventoryManager.GetInstance().GetTotalMoney() < roundInfo.Goal)
         {
 //***********************************************************//
 // Show the "game over" screen
