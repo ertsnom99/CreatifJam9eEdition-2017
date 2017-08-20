@@ -2,8 +2,8 @@
 <WwiseSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <WwiseProjectPath>../../Flamingos/Assets/FlamingoWwise/FlamingoWwise.wproj</WwiseProjectPath>
   <SoundbankPath>Audio/GeneratedSoundBanks</SoundbankPath>
-  <CreateWwiseGlobal>true</CreateWwiseGlobal>
-  <CreateWwiseListener>true</CreateWwiseListener>
+  <CreateWwiseGlobal>false</CreateWwiseGlobal>
+  <CreateWwiseListener>false</CreateWwiseListener>
   <ShowMissingRigidBodyWarning>true</ShowMissingRigidBodyWarning>
   <WwiseInstallationPathWindows>null</WwiseInstallationPathWindows>
   <WwiseInstallationPathMac>null</WwiseInstallationPathMac>
