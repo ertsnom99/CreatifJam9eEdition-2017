@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class Observer : MonoBehaviour {
-    public abstract void Update(); 
+public abstract class Observer : MonoBehaviour
+{
+    public abstract void UpdateObserver(); 
 }

@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StartCanvas : MonoBehaviour {
 
     [SerializeField]
     private Canvas creditCanvas;
-
-    private Action callBackMethod;
+    
     private GameObject disabledCanvas;
-
-    public void SetCallBackMethodOnClose(Action method)
-    {
-        callBackMethod = method;
-    }
 
     public void SetDisabledCanvas(GameObject disabledCanvas)
     {
@@ -31,7 +23,7 @@ public class StartCanvas : MonoBehaviour {
     public void StartGame()
     {
         Destroy(gameObject);
-        Debug.LogWarning("Start The Game Now!");
+        GameManager.Instance.StartGame();
     }
 
     public void Quit()

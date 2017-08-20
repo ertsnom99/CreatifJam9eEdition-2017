@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Player_HUD : Observer {
-    
+public class Player_HUD : Observer
+{    
     public Text MoneyText;
     public Text Bottle1Text;
     public Text Bottle2Text;
@@ -13,13 +10,11 @@ public class Player_HUD : Observer {
     public Text Bottle4Text;
     public Text BearTrapText;
 
-    public override void Update()
+    public override void UpdateObserver()
     {
-        float quantity;
-
         MoneyText.text = "Money : " + InventoryManager.GetInstance().GetTotalMoney().ToString() + " $";
 
-        quantity = InventoryManager.GetInstance().GetAmountOfItem(ItemManager.Instance.Items[0].ID);
+        float quantity = InventoryManager.GetInstance().GetAmountOfItem(ItemManager.Instance.Items[0].ID);
 
        if (quantity == -1) quantity = Mathf.Infinity;
 

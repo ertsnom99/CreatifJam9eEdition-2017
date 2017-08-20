@@ -19,12 +19,9 @@ public class PlayerController : MonoBehaviour
         rotationScript = GetComponent<PlayerRotation>();
         bottleThrowerScript = GetComponent<BottleThrower>();
     }
-
+    
     private void Update()
     {
-        // For test purposess
-        debugCommand();
-
         if (Time.deltaTime > 0)
         {
             Hashtable inputs = fetchInputs();
@@ -53,6 +50,8 @@ public class PlayerController : MonoBehaviour
                     if ((bool)inputs["throwInput"]) bottleThrowerScript.Throw();
                 }
             }
+
+            if ((bool) inputs["pauseInput"]) GameManager.Instance.Pause();
         }
     }
 
@@ -75,6 +74,7 @@ public class PlayerController : MonoBehaviour
     //-selectInput
     //-chargeInput
     //-throwInput
+    //-pauseInput
     Hashtable fetchInputs()
     {
         Hashtable inputs = new Hashtable();
@@ -87,39 +87,8 @@ public class PlayerController : MonoBehaviour
         inputs.Add("chargeInput", Input.GetButtonDown("Fire1"));
         inputs.Add("throwInput", Input.GetButtonUp("Fire1"));
 
+        inputs.Add("pauseInput", Input.GetButtonDown("Cancel"));
+
         return inputs;
-    }
-    
-    static void ClearConsole()
-    {
-        // This simply does "LogEntries.Clear()" the long way:
-        var logEntries = System.Type.GetType("UnityEditorInternal.LogEntries,UnityEditor.dll");
-        var clearMethod = logEntries.GetMethod("Clear", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-        clearMethod.Invoke(null, null);
-    }
-
-    void debugCommand()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (Time.timeScale == 1)
-            {
-                Time.timeScale = 0.2f;
-            }
-            else if (Time.timeScale == 0.2f)
-            {
-                Time.timeScale = 0.0f;
-            }
-            else
-            {
-                Time.timeScale = 1;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Debug.ClearDeveloperConsole();
-            SceneManager.LoadScene(0);
-        }
     }
 }

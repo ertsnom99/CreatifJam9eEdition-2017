@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public abstract class Observable<T> : Singleton<T> where T : class
 {
@@ -10,11 +8,16 @@ public abstract class Observable<T> : Singleton<T> where T : class
         if (!observers.Contains(observer)){ observers.Add(observer); }
     }
 
+    public void UnregisterObserver(Observer observer)
+    {
+        if (observers.Contains(observer)) { observers.Remove(observer); }
+    }
+
     protected void NotifyObservers()
     {
         foreach (Observer observer in observers)
         {
-            observer.Update();
+            observer.UpdateObserver();
         }
     }
 }
