@@ -66,7 +66,7 @@ public class BottleThrower : MonoBehaviour
         // Throw the correct bottle and make it rotate
         rigidBody.velocity = ThrowOrigin.transform.forward * Charge * MaxThrowStrength;
         rigidBody.AddTorque(bottle.transform.right * Charge * MaxTorqueStrength);
-
+        
         SelectedBottle = null;
 
         IsCharging = false;

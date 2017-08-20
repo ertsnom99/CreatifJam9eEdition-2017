@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -13,6 +14,9 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     private Canvas pauseCanvas;
 
+    [SerializeField]
+    private Canvas staminaBarCanvas;
+
     private GameObject currentHUDCanvas;
     private GameObject currentPauseCanvas;
 
@@ -23,6 +27,9 @@ public class GameManager : MonoSingleton<GameManager>
     {
         // Set the FPS camera as the main camera
         CameraManager.Instance.ChangeCamera(CameraManager.FPS_CAMERA);
+
+        // Hide the stamina bar
+        staminaBarCanvas.enabled = false;
 
         // Diseable control of the character
         player.GetComponent<PlayerController>().enabled = false;
@@ -35,8 +42,14 @@ public class GameManager : MonoSingleton<GameManager>
     public void StartGame()
     {
         // Display the HUD
-        currentHUDCanvas = Instantiate(this.HUDCanvas).gameObject;
+        currentHUDCanvas = Instantiate(HUDCanvas).gameObject;
         InventoryManager.GetInstance().RegisterObserver(currentHUDCanvas.GetComponent<Player_HUD>());
+
+        // Show the stamina bar
+        staminaBarCanvas.enabled = true;
+
+        // Reset the inventory to it's base value
+        InventoryManager.GetInstance().ResetInventory();
 
         // Hide and lock the cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -89,6 +102,9 @@ public class GameManager : MonoSingleton<GameManager>
         // Unregister and remove HUD
         InventoryManager.GetInstance().UnregisterObserver(currentHUDCanvas.GetComponent<Player_HUD>());
         Destroy(currentHUDCanvas);
+
+        // Hide the stamina bar
+        staminaBarCanvas.enabled = false;
 
         // Remove the pause menu
         Destroy(currentPauseCanvas);
