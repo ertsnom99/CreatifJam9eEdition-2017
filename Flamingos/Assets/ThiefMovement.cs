@@ -8,7 +8,7 @@ public class ThiefMovement : MonoBehaviour {
     //private readonly WayPointManager wayPointManager;
     private NavMeshAgent ThiefAgent;
     public Vector3 CurrentDestination;
-    private int CurrentDestinationID;
+    public int CurrentDestinationID;
     public int WayPointID;
     private List<WayPointListManager.Vertex> wayPointList;
     private bool isInitializationComplete = false;
@@ -27,7 +27,7 @@ public class ThiefMovement : MonoBehaviour {
         // TO MAKE
         //WayPointID = wayPointManager.GetValidWaypointID();
 
-        WayPointID = 2; //for TEST purposes
+        //WayPointID = 2; //for TEST purposes
         WayPointListManager.Instance.Initialize();
         wayPointList = WayPointListManager.Instance.GetWayPointListCopy(WayPointID);
 

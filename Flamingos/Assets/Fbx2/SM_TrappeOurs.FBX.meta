@@ -6,10 +6,20 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Piege2
+    100004: piegecylindre
     400000: //RootNode
+    400002: Piege2
+    400004: piegecylindre
     2300000: //RootNode
+    2300002: Piege2
+    2300004: piegecylindre
     3300000: //RootNode
+    3300002: Piege2
+    3300004: piegecylindre
     4300000: Cylinder012
+    4300002: piegecylindre
+    4300004: Piege2
   materials:
     importMaterials: 1
     materialName: 0
