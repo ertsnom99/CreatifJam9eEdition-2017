@@ -8,7 +8,7 @@ using UnityEngine;
 public class ClientBehavior : MonoBehaviour {
 
     public float timeUntilDisappearance;
-
+    public int OccupiedPosition;
     
     // Use this for initialization
     void Start () {
@@ -19,6 +19,7 @@ public class ClientBehavior : MonoBehaviour {
     {
         if (collision.collider.gameObject.tag == GameManager.THROWED_BOTTLE_TAG)
         {
+            SpawnManager.Instance.RemoveClientFromArray(OccupiedPosition);
             Destroy(gameObject);
         }
     }

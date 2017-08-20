@@ -139,7 +139,7 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
         GameObject SpawnedClientLocation = SpawnClientLocationArray[locationInArray];
 
         GameObject newlySpawned = Instantiate(Client, SpawnedClientLocation.transform.position, SpawnedClientLocation.transform.rotation);
-
+        newlySpawned.GetComponent<ClientBehavior>().OccupiedPosition = locationInArray;
         OccupiedClientLocationArray[locationInArray] = true;
         spawnedClients.Add(newlySpawned);       
     }
@@ -174,6 +174,10 @@ public class SpawnManager : MonoSingleton<SpawnManager> {
         isEnabled = false;
     }
 
+    public void RemoveClientFromArray(int positionInArray)
+    {
+        OccupiedClientLocationArray[positionInArray] = false;
+    }
 
 
 
