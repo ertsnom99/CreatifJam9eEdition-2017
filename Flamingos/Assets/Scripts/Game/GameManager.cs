@@ -19,6 +19,8 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     private Canvas pauseCanvas;
     [SerializeField]
+    private Canvas gameOverCanvas;
+    [SerializeField]
     private Canvas shopCanvas;
 
     [SerializeField]
@@ -145,11 +147,10 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         // Check if the player has enough money to continue playing (Game Over)
         if (InventoryManager.GetInstance().GetTotalMoney() < roundInfo.Goal)
         {
-//***********************************************************//
-// Show the "game over" screen
-// Call StartGame() to start a new game
-// Call QuitGame() to quit and go back to the menu
-//***********************************************************//
+            // Show the game over menu
+            GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
+            gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnRestart(StartGame);
+            gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnQuit(QuitGame);
         }
         else
         {
