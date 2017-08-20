@@ -98,23 +98,39 @@ public class GameManager : MonoSingleton<GameManager>
 
         roundInfo = RoundInfoFactery.GetInstance().GetRoundInfo(Round);
 
-        currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
+        if (roundInfo != null)
+        {
+            currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
 
-        // Eneable control of the character
-        player.GetComponent<PlayerController>().enabled = true;
+            // Eneable control of the character
+            player.GetComponent<PlayerController>().enabled = true;
 
 
-        //*************************************************************//
-        // For ennemis
-        //SHOULD START GENERATING THE ENNEMIS
-        //*************************************************************//
-        SpawnManager.Instance.clientSpawnFrequency = getClientFrequency(Round);
-        SpawnManager.Instance.Enable();
-        SpawnManager.Instance.StartSpawningClientsAndDrunks();
-        //*************************************************************//
+            //*************************************************************//
+            // For ennemis
+            //SHOULD START GENERATING THE ENNEMIS
+            //*************************************************************//
+            SpawnManager.Instance.clientSpawnFrequency = getClientFrequency(Round);
+            SpawnManager.Instance.Enable();
+            SpawnManager.Instance.StartSpawningClientsAndDrunks();
+            //*************************************************************//
+
+            // Start the timer
+            StartCoroutine(Timer(RoundDuration));
+        }
+        else
+        {
+            // Unhide and unlock the cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // Show the game over menu
+            GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
+            gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnRestart(StartGame);
+            gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnQuit(QuitGame);
+        }
         
-        // Start the timer
-        StartCoroutine(Timer(RoundDuration));
+        
     }
 
     IEnumerator Timer(float timeLimit)
