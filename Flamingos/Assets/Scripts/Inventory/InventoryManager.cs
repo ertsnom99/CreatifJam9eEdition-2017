@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : Observable<InventoryManager>
 {
     public Dictionary<int, int> items;
     private int total_money;
@@ -19,6 +19,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
         
         total_money = INITIAL_MONEY;
+        NotifyObservers();
     }
 
     public void AddItem(int item_ID)
@@ -26,6 +27,7 @@ public class InventoryManager : Singleton<InventoryManager>
         if (items[item_ID] == -1)
             { return; }
         items[item_ID]++;
+        NotifyObservers();
     }
 
     public void RemoveItem(int item_ID)
@@ -33,11 +35,13 @@ public class InventoryManager : Singleton<InventoryManager>
         if(items[item_ID] == -1)
             { return; }
         items[item_ID]--;
+        NotifyObservers();
     }
 
     public void AddMoney(int money)
     {
         total_money += money;
+        NotifyObservers();
     }
 
     public void RemoveMoney(int cost)
@@ -47,6 +51,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             total_money = 0;
         }
+        NotifyObservers();
     }
     
     public int GetAmountOfItem(int item_name)
