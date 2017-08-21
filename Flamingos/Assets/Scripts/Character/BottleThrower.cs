@@ -21,6 +21,7 @@ public class BottleThrower : MonoBehaviour
     public float MaxThrowStrength { get; private set; }
     public float MaxTorqueStrength { get; private set; }
 
+    [SerializeField]
     private float chargeSpeed = 0.5f;
 
     private void Awake ()
