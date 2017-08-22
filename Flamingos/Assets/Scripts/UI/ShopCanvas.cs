@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopCanvas : MonoBehaviour {
 
-    private const int BOTTLE_1 = 0;
+    //private const int BOTTLE_1 = 0;
     private const int BOTTLE_2 = 1;
     private const int BOTTLE_3 = 2;
     private const int BOTTLE_4 = 3;
@@ -49,6 +47,7 @@ public class ShopCanvas : MonoBehaviour {
     public void ExitShop()
     {
         Destroy(gameObject);
+        SoundManager.Instance.PlayOneShotSound("SFXQuitShop");
         if (callBackMethod != null) callBackMethod();
     }
     
@@ -63,6 +62,7 @@ public class ShopCanvas : MonoBehaviour {
                     InventoryManager.GetInstance().AddItem(BOTTLE_2);
                     InventoryManager.GetInstance().RemoveMoney(ItemManager.Instance.GetPriceByItemID(BOTTLE_2));
                     MoneyText.text = "Money : " + InventoryManager.GetInstance().GetTotalMoney().ToString() + " $";
+                    SoundManager.Instance.PlayOneShotSound("SFXBuyItem");
                 }
                 else
                     { NotEnoughMoneyText.text = "Not Enough Money!"; }
@@ -73,6 +73,7 @@ public class ShopCanvas : MonoBehaviour {
                     InventoryManager.GetInstance().AddItem(BOTTLE_3);
                     InventoryManager.GetInstance().RemoveMoney(ItemManager.Instance.GetPriceByItemID(BOTTLE_3));
                     MoneyText.text = "Money : " + InventoryManager.GetInstance().GetTotalMoney().ToString() + " $";
+                    SoundManager.Instance.PlayOneShotSound("SFXBuyItem");
                 }
                 else
                     { NotEnoughMoneyText.text = "Not Enough Money!"; }
@@ -83,6 +84,7 @@ public class ShopCanvas : MonoBehaviour {
                     InventoryManager.GetInstance().AddItem(BOTTLE_4);
                     InventoryManager.GetInstance().RemoveMoney(ItemManager.Instance.GetPriceByItemID(BOTTLE_4));
                     MoneyText.text = "Money : " + InventoryManager.GetInstance().GetTotalMoney().ToString() + " $";
+                    SoundManager.Instance.PlayOneShotSound("SFXBuyItem");
                 }
                 else
                     { NotEnoughMoneyText.text = "Not Enough Money!"; }

@@ -13,6 +13,7 @@ public class BottleStealZone : MonoBehaviour {
         {
             InventoryManager.GetInstance().RemoveItem(StolenBottleType.ID);
             Destroy(other.gameObject);
+            SoundManager.Instance.PlayOneShotSound("SFXGotRobbed");
         }
         
     }

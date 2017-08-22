@@ -8,6 +8,7 @@ public class ThrowableBottle : MonoBehaviour
         {
             case GameManager.ROOM_TAG:
                 Destroy(gameObject);
+                SoundManager.Instance.PlayOneShotSound("SFXImpact");
                 break;
             case GameManager.DRUNK_TAG:
                 Destroy(gameObject);
@@ -15,6 +16,7 @@ public class ThrowableBottle : MonoBehaviour
             case GameManager.CLIENT_TAG:
                 InventoryManager.GetInstance().AddMoney(GetComponent<Item>().Gain);
                 Destroy(gameObject);
+                SoundManager.Instance.PlayOneShotSound("SFXClientServed");
                 break;
         }
     }

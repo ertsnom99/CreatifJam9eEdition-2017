@@ -31,7 +31,6 @@ public class BottleThrower : MonoBehaviour
         IsCharging = false;
 	    MaxThrowStrength = 20.0f;
         MaxTorqueStrength = 50.0f;
-
     }
 	
 	private void Update ()

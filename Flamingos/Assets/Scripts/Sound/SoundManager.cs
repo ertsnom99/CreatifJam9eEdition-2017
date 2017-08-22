@@ -127,7 +127,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    public void playOneShotSound(string soundKey)
+    public void PlayOneShotSound(string soundKey)
     {
         AudioSource source = SFXSource.isPlaying ? SFXSourceAlt : SFXSource;
         source.clip = FXSounds[soundKey];

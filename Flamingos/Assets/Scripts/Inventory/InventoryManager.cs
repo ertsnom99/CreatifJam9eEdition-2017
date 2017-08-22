@@ -47,10 +47,10 @@ public class InventoryManager : Observable<InventoryManager>
     public void RemoveMoney(int cost)
     {
         total_money -= cost;
-        if (total_money < 0)
+        /*if (total_money < 0)
         {
             total_money = 0;
-        }
+        }*/
         NotifyObservers();
     }
     

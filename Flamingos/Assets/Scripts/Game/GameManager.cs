@@ -59,11 +59,13 @@ public class GameManager : MonoSingleton<GameManager>
         // Stock the original orientation of the character and camera 
         initCharacterRot = player.transform.rotation;
         initCameraRot = CameraManager.Instance.CurrentCamera.transform.rotation;
+
+        SoundManager.Instance.SetPrimaryAmbient("AMBMenu");
+        SoundManager.Instance.PlayPrimaryAmbient();
     }
 
     public void StartGame()
     {
-        Debug.Log("start game");
         // Display the HUD
         if (currentHUDCanvas == null)
         { 
@@ -90,7 +92,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void StartRound()
     {
-        Debug.Log("start round");
         SoundManager.Instance.RestartPrimaryAmbient();
         SoundManager.Instance.RestartSecondaryAmbient();
         
@@ -121,6 +122,8 @@ public class GameManager : MonoSingleton<GameManager>
 
             // Start the timer
             StartCoroutine(Timer(RoundDuration));
+
+            SoundManager.Instance.PlayOneShotSound("SFXStartRound");
         }
         else
         {
@@ -181,18 +184,22 @@ public class GameManager : MonoSingleton<GameManager>
         InventoryManager.GetInstance().RemoveMoney(roundInfo.Goal);
 
         // Check if the player has enough money to continue playing (Game Over)
-        if (InventoryManager.GetInstance().GetTotalMoney() <= 0)
+        if (InventoryManager.GetInstance().GetTotalMoney() < 0)
         {
             // Show the game over menu
             GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
             gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnRestart(StartGame);
             gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnQuit(QuitGame);
+
+            SoundManager.Instance.PlayOneShotSound("SFXJingleDefeat");
         }
         else
         {
             // Show the shop
             GameObject shopCanvas = Instantiate(this.shopCanvas).gameObject;
             shopCanvas.GetComponent<ShopCanvas>().SetCallBackMethodOnClose(StartRound);
+
+            SoundManager.Instance.PlayOneShotSound("SFXShopOpens");
         }
 
         // Unhide and unlock the cursor
