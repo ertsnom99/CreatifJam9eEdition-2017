@@ -8,7 +8,6 @@ public class BottleStealZone : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
         if (other.gameObject.tag == GameManager.DRUNK_TAG)
         {
             InventoryManager.GetInstance().RemoveItem(StolenBottleType.ID);

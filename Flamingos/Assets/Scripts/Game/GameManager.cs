@@ -45,6 +45,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     private RoundInfo roundInfo;
 
+    private IEnumerator timer;
+
     private void Start ()
     {
         // Set the FPS camera as the main camera
@@ -106,7 +108,7 @@ public class GameManager : MonoSingleton<GameManager>
         if (roundInfo != null)
         {
             currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
-            Debug.Log("bouge");
+
             // Eneable control of the character
             player.GetComponent<PlayerController>().enabled = true;
 
@@ -121,7 +123,8 @@ public class GameManager : MonoSingleton<GameManager>
             //*************************************************************//
 
             // Start the timer
-            StartCoroutine(Timer(RoundDuration));
+            timer = Timer(RoundDuration);
+            StartCoroutine(timer);
 
             SoundManager.Instance.PlayOneShotSound("SFXStartRound");
         }
@@ -146,9 +149,7 @@ public class GameManager : MonoSingleton<GameManager>
         yield return new WaitForSeconds(timeLimit);
         EndRound();
     }
-
     
-
     private void EndRound()
     {
 
@@ -180,6 +181,9 @@ public class GameManager : MonoSingleton<GameManager>
 
         SoundManager.Instance.PausePrimaryAmbient();
         SoundManager.Instance.RestartSecondaryAmbient();
+
+        // Remove all glow effects
+        GlowBottleEffectManager.Instance.RemoveAllGlow();
 
         InventoryManager.GetInstance().RemoveMoney(roundInfo.Goal);
 
@@ -254,9 +258,14 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void QuitGame()
     {
+        StopCoroutine(timer);
+
         // Return the character and the camera to there original orientation
         player.transform.rotation = initCharacterRot;
         CameraManager.Instance.CurrentCamera.transform.rotation = initCameraRot;
+
+        // Remove all glow effects
+        GlowBottleEffectManager.Instance.RemoveAllGlow();
 
         // Unregister and remove HUD
         InventoryManager.GetInstance().UnregisterObserver(currentHUDCanvas.GetComponent<Player_HUD>());

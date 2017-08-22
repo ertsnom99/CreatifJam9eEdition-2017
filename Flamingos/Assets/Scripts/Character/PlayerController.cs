@@ -34,14 +34,20 @@ public class PlayerController : MonoBehaviour
                 // Rotate the camera
                 CameraManager.Instance.CurrentCamera.GetComponent<FPSCameraControl>().RotateCameraWithInput(inputs, true);
 
+                // Cast a ray to check if the player is looking at a bottle
+                GameObject bottleWatched = GetWacthedBottle();
+                
+                // Apply over glow effect
+                GlowBottleEffectManager.Instance.OverBottle(bottleWatched);
+
                 if (!bottleThrowerScript.IsCharging && (bool) inputs["selectInput"])
                 {
-                    // Cast a ray to check if a bottle is clicked
-                    Transform selectedbottle = TrySelectBottle();
-
-                    if (selectedbottle != null && InventoryManager.GetInstance().GetAmountOfItem(selectedbottle.GetComponent<Item>().ID) != 0)
+                    if (bottleWatched != null && InventoryManager.GetInstance().GetAmountOfItem(bottleWatched.GetComponent<Item>().ID) != 0)
                     {
-                        bottleThrowerScript.SelectBottle(selectedbottle.GetComponent<Item>());
+                        bottleThrowerScript.SelectBottle(bottleWatched.GetComponent<Item>());
+
+                        // Apply select glow effect
+                        GlowBottleEffectManager.Instance.SelectBottle(bottleWatched);
                     }
                 }
                 else if (bottleThrowerScript.SelectedBottle != null && InventoryManager.GetInstance().GetAmountOfItem(bottleThrowerScript.SelectedBottle.ID) != 0)
@@ -55,7 +61,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Transform TrySelectBottle()
+    private GameObject GetWacthedBottle()
     {
         // Create a ray based on the camera
         GameObject camera = CameraManager.Instance.CurrentCamera;
@@ -65,7 +71,11 @@ public class PlayerController : MonoBehaviour
 
         Physics.Raycast(ray, out hit, raycastDistance, bottlesLayer);
 
-        return hit.transform;
+        GameObject bottle = null;
+
+        if (hit.transform != null) bottle = hit.transform.gameObject;
+        
+        return bottle;
     }
 
     // The Hashtable of inputs value must contain those keys:
