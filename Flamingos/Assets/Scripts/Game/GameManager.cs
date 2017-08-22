@@ -35,7 +35,7 @@ public class GameManager : MonoSingleton<GameManager>
     public int Round { get; private set; }
 
     [SerializeField]
-    private float roundDuration = 90.0f;
+    private float roundDuration = 94.0f;
 
     public float RoundDuration
     {
