@@ -35,7 +35,7 @@ public class GameManager : MonoSingleton<GameManager>
     public int Round { get; private set; }
 
     [SerializeField]
-    private float roundDuration = 5f;
+    private float roundDuration = 90.0f;
 
     public float RoundDuration
     {
@@ -45,10 +45,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private RoundInfo roundInfo;
 
-    private void Awake()
-    {
-        RoundDuration = 10f;
-    }
+    private IEnumerator timer;
 
     private void Start ()
     {
@@ -64,6 +61,9 @@ public class GameManager : MonoSingleton<GameManager>
         // Stock the original orientation of the character and camera 
         initCharacterRot = player.transform.rotation;
         initCameraRot = CameraManager.Instance.CurrentCamera.transform.rotation;
+
+        SoundManager.Instance.SetPrimaryAmbient("AMBMenu");
+        SoundManager.Instance.PlayPrimaryAmbient();
     }
 
     public void StartGame()
@@ -84,12 +84,19 @@ public class GameManager : MonoSingleton<GameManager>
         // Reset the number of round
         Round = 0;
 
+        SoundManager.Instance.SetPrimaryAmbient("AMBGame");
+
+        SoundManager.Instance.SetSecondaryAmbient("AMBPause");
+
         // Start a new round
         StartRound();
     }
 
     private void StartRound()
     {
+        SoundManager.Instance.RestartPrimaryAmbient();
+        SoundManager.Instance.RestartSecondaryAmbient();
+        
         // Hide and lock the cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -98,19 +105,42 @@ public class GameManager : MonoSingleton<GameManager>
 
         roundInfo = RoundInfoFactery.GetInstance().GetRoundInfo(Round);
 
-        currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
+        if (roundInfo != null)
+        {
+            currentHUDCanvas.GetComponent<Player_HUD>().NotifyGoalChange(roundInfo.Goal);
 
-        // Eneable control of the character
-        player.GetComponent<PlayerController>().enabled = true;
-//*************************************************************//
-// For ennemis
-//SHOULD START GENERATING THE ENNEMIS
-/*GameObject SpawnLocation1 = GameObject.Find("SpawnLocation1");
-GameObject SpawnedThief = Instantiate(thief, SpawnLocation1.transform.position, SpawnLocation1.transform.rotation);
-SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
-//*************************************************************//
-        // Start the timer
-        StartCoroutine(Timer(RoundDuration));
+            // Eneable control of the character
+            player.GetComponent<PlayerController>().enabled = true;
+
+
+            //*************************************************************//
+            // For ennemis
+            //SHOULD START GENERATING THE ENNEMIS
+            //*************************************************************//
+            SpawnManager.Instance.clientSpawnFrequency = getClientFrequency(Round);
+            SpawnManager.Instance.Enable();
+            SpawnManager.Instance.StartSpawningClientsAndDrunks();
+            //*************************************************************//
+
+            // Start the timer
+            timer = Timer(RoundDuration);
+            StartCoroutine(timer);
+
+            SoundManager.Instance.PlayOneShotSound("SFXStartRound");
+        }
+        else
+        {
+            // Unhide and unlock the cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // Show the game over menu
+            GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
+            gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnRestart(StartGame);
+            gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnQuit(QuitGame);
+        }
+        
+        
     }
 
     IEnumerator Timer(float timeLimit)
@@ -119,13 +149,18 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         yield return new WaitForSeconds(timeLimit);
         EndRound();
     }
-
+    
     private void EndRound()
     {
-//*************************************************************//
-// For ennemis
-//SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
-//*************************************************************//
+
+        //*************************************************************//
+        // For ennemis
+        //SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
+        //*************************************************************//
+        SpawnManager.Instance.StopSpawningClientsAndDrunks();
+        SpawnManager.Instance.KillAllDrunksAndClients();
+        //*************************************************************//
+
         // Diseable control of the character
         player.GetComponent<PlayerController>().enabled = false;
 
@@ -143,20 +178,43 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         // Return the character and the camera to there original orientation
         player.transform.rotation = initCharacterRot;
         CameraManager.Instance.CurrentCamera.transform.rotation = initCameraRot;
-        
-        // Check if the player has enough money to continue playing (Game Over)
-        if (InventoryManager.GetInstance().GetTotalMoney() < roundInfo.Goal)
+
+        SoundManager.Instance.PausePrimaryAmbient();
+        SoundManager.Instance.RestartSecondaryAmbient();
+
+        // Remove all glow effects
+        GlowBottleEffectManager.Instance.RemoveAllGlow();
+
+        // If there's a next round
+        if (RoundInfoFactery.GetInstance().GetRoundInfo(Round + 1) != null)
+        {
+            InventoryManager.GetInstance().RemoveMoney(roundInfo.Goal);
+
+            // Check if the player has enough money to continue playing (Game Over)
+            if (InventoryManager.GetInstance().GetTotalMoney() < 0)
+            {
+                // Show the game over menu
+                GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
+                gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnRestart(StartGame);
+                gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnQuit(QuitGame);
+
+                SoundManager.Instance.PlayOneShotSound("SFXJingleDefeat");
+            }
+            else
+            {
+                // Show the shop
+                GameObject shopCanvas = Instantiate(this.shopCanvas).gameObject;
+                shopCanvas.GetComponent<ShopCanvas>().SetCallBackMethodOnClose(StartRound);
+
+                SoundManager.Instance.PlayOneShotSound("SFXShopOpens");
+            }
+        }
+        else
         {
             // Show the game over menu
             GameObject gameOverCanvas = Instantiate(this.gameOverCanvas).gameObject;
             gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnRestart(StartGame);
             gameOverCanvas.GetComponent<GameOverCanvas>().SetCallBackMethodOnQuit(QuitGame);
-        }
-        else
-        {
-            // Show the shop
-            GameObject shopCanvas = Instantiate(this.shopCanvas).gameObject;
-            shopCanvas.GetComponent<ShopCanvas>().SetCallBackMethodOnClose(StartRound);
         }
 
         // Unhide and unlock the cursor
@@ -177,9 +235,14 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         currentPauseCanvas.GetComponent<PauseCanvas>().SetCallBackMethodOnClose(Resume);
         currentPauseCanvas.GetComponent<PauseCanvas>().SetCallBackMethodOnMenu(QuitGame);
 
+        SoundManager.Instance.PausePrimaryAmbient();
+        SoundManager.Instance.RestartSecondaryAmbient();
+
         // Unhide and unlock the cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        SpawnManager.Instance.StopSpawningClientsAndDrunks();
     }
 
     public void Resume()
@@ -195,15 +258,25 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         // Eneable control of the character
         player.GetComponent<PlayerController>().enabled = true;
 
+        SoundManager.Instance.StopSecondaryAmbient();
+        SoundManager.Instance.PlayPrimaryAmbient();
+
         // Returne time to normal... THE WORLD!!! TOKIO TOMARE!!!
         Time.timeScale = 1;
+
+        SpawnManager.Instance.StartSpawningClientsAndDrunks();
     }
 
     public void QuitGame()
     {
+        StopCoroutine(timer);
+
         // Return the character and the camera to there original orientation
         player.transform.rotation = initCharacterRot;
         CameraManager.Instance.CurrentCamera.transform.rotation = initCameraRot;
+
+        // Remove all glow effects
+        GlowBottleEffectManager.Instance.RemoveAllGlow();
 
         // Unregister and remove HUD
         InventoryManager.GetInstance().UnregisterObserver(currentHUDCanvas.GetComponent<Player_HUD>());
@@ -217,9 +290,46 @@ SpawnedThief.GetComponent<ThiefMovement>().StartChar();*/
         Destroy(currentPauseCanvas);
         currentPauseCanvas = null;
 
-//*************************************************************//
-// For ennemis
-//SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
-//*************************************************************//
+        // Returne time to normal... THE WORLD!!! TOKIO TOMARE!!!
+        Time.timeScale = 1;
+
+        SoundManager.Instance.StopSecondaryAmbient();
+        SoundManager.Instance.StopPrimaryAmbient();
+
+        SoundManager.Instance.SetPrimaryAmbient("AMBMenu");
+        SoundManager.Instance.PlayPrimaryAmbient();
+
+        //*************************************************************//
+        // For ennemis
+        //SHOULD DELETE ALL ENNEMIS AND STOP GENERATING OTHERS
+        SpawnManager.Instance.StopSpawningClientsAndDrunks();
+        SpawnManager.Instance.KillAllDrunksAndClients();
+        SpawnManager.Instance.Disable();
+        //*************************************************************//
+
+    }
+
+    private float getClientFrequency(int currentRound)
+    {
+        switch (currentRound)
+        {
+            case 1:
+            {
+                    return 5.0f;
+                    break;
+            }
+            case 2:
+            {
+                    return 4.0f;
+                    break;
+            }
+            case 3:
+            {
+                    return 4.0f;
+                    break;
+            }
+
+        }; //end switch
+        return -1;
     }
 }

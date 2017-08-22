@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class InventoryManager : Observable<InventoryManager>
 {
     public Dictionary<int, int> items;
     private int total_money;
 
-    private const int INITIAL_MONEY = 1000;
+    private const int INITIAL_MONEY = 100;
 
     public void ResetInventory()
     {
@@ -32,7 +30,7 @@ public class InventoryManager : Observable<InventoryManager>
 
     public void RemoveItem(int item_ID)
     {
-        if(items[item_ID] == -1)
+        if(items[item_ID] <= 0)
             { return; }
         items[item_ID]--;
         NotifyObservers();
@@ -47,10 +45,10 @@ public class InventoryManager : Observable<InventoryManager>
     public void RemoveMoney(int cost)
     {
         total_money -= cost;
-        if (total_money < 0)
+        /*if (total_money < 0)
         {
             total_money = 0;
-        }
+        }*/
         NotifyObservers();
     }
     

@@ -12,7 +12,7 @@ public class ThiefMovement : MonoBehaviour {
     public int WayPointID;
     private List<WayPointListManager.Vertex> wayPointList;
     private bool isInitializationComplete = false;
-    private GameObject Thief;
+        
     // Use this for initialization
     void Awake()
     {
@@ -20,6 +20,19 @@ public class ThiefMovement : MonoBehaviour {
         //Thief = GameObject.Find("Thief(Clone)");
         ThiefAgent = GetComponentInChildren<NavMeshAgent>();
     }
+
+    void OnCollisionEnter (Collision collision)
+    {
+        //Debug.Log("I WAS TOUCHED!!!!!!!!!!!!");
+        Debug.Log("I WAS TOUCHED!!!!!!!!!!!! : " + collision.gameObject.tag);
+        if (collision.collider.gameObject.tag == GameManager.THROWED_BOTTLE_TAG)
+        {
+            
+            Destroy(gameObject);
+            
+        }
+    }
+
     public void StartChar() {
 
         //wayPointManager = GetComponent<WayPointManager>(); //WE WILL NEED THIS LATER!
@@ -33,7 +46,7 @@ public class ThiefMovement : MonoBehaviour {
         wayPointList = WayPointListManager.Instance.GetWayPointListCopy(WayPointID);
 
 
-        
+
         ThiefAgent.speed = 1.5f;
         CurrentDestinationID = 0;
         CurrentDestination = getNextDestination(CurrentDestinationID);

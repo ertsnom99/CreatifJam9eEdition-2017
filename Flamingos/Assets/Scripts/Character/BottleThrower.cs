@@ -21,6 +21,7 @@ public class BottleThrower : MonoBehaviour
     public float MaxThrowStrength { get; private set; }
     public float MaxTorqueStrength { get; private set; }
 
+    [SerializeField]
     private float chargeSpeed = 0.5f;
 
     private void Awake ()
@@ -30,7 +31,6 @@ public class BottleThrower : MonoBehaviour
         IsCharging = false;
 	    MaxThrowStrength = 20.0f;
         MaxTorqueStrength = 50.0f;
-
     }
 	
 	private void Update ()
@@ -66,8 +66,6 @@ public class BottleThrower : MonoBehaviour
         // Throw the correct bottle and make it rotate
         rigidBody.velocity = ThrowOrigin.transform.forward * Charge * MaxThrowStrength;
         rigidBody.AddTorque(bottle.transform.right * Charge * MaxTorqueStrength);
-        
-        SelectedBottle = null;
 
         IsCharging = false;
         Charge = 0;
